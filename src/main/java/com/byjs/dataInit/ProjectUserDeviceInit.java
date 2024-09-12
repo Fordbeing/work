@@ -57,7 +57,7 @@ public class ProjectUserDeviceInit {
         for (int i = 1; i <= 600; i++) {
             // 用于存放用户设备信息，存放一个列表数据（ID,坐标x，坐标y）
             List<Integer> sbsList = new ArrayList<>();
-            sbsList.add(0); // 每一个用户都能连接上MBS
+            sbsList.add(1); // 每一个用户都能连接上MBS
             double x = 0;
             double y = 0;
             double sbsX = 0;
@@ -68,7 +68,7 @@ public class ProjectUserDeviceInit {
             double chance = random.nextDouble();
             if (chance < 0.8) {
                 // 选择一个随机的SBS
-                int sbsId = random.nextInt(10) + 1; // 选择1到10的随机数作为SBS ID
+                int sbsId = random.nextInt(10) + 2; // 选择2到11的随机数作为SBS ID，因为1就是MBS，是全覆盖的
                 String sql = "select locationX, locationY from sbsmodel where ID = " + sbsId;
                 try {
                     ResultSet resultSet = conn.createStatement().executeQuery(sql);
@@ -91,7 +91,7 @@ public class ProjectUserDeviceInit {
             }
 
             // 判断生成的位置是否在SBS范围内，并填充sbsList
-            for (int j = 1; j <= 10; j++) {
+            for (int j = 2; j <= 11; j++) {
                 String sql = "select locationX, locationY from sbsmodel where ID = " + j;
                 try {
                     ResultSet resultSet = conn.createStatement().executeQuery(sql);

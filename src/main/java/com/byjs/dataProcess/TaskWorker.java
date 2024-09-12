@@ -41,12 +41,12 @@ public class TaskWorker implements Runnable {
         // 尝试获取 taskLock，确保任务的互斥处理
         taskLock.lock();
         try {
-            System.out.println("正在处理用户的任务: " + task.getTaskId()+"任务中包含的SBS列表: " + task.getSBSList());
-            System.out.println();
+//            System.out.println("正在处理用户的任务: " + task.getTaskId()+"任务中包含的SBS列表: " + task.getSBSList());
+//            System.out.println();
 
             // 遍历任务中的SBS列表
             for (Integer sbs : task.getSBSList()) {
-                System.out.println("正在处理SBS: " + sbs);
+//                System.out.println("正在处理SBS: " + sbs);
 
                 // 尝试获取 preferenceListLock，确保偏好列表的线程安全
                 preferenceListLock.lock();
@@ -55,12 +55,15 @@ public class TaskWorker implements Runnable {
                             .anyMatch(preference -> preference.getSbsID().equals(sbs));
 
                     if (isPreferenceFound) {
-                        System.out.println("SBS " + sbs + " 在偏好列表中找到。");
+//                        System.out.println("SBS " + sbs + " 在偏好列表中找到。");
                         // 对匹配的偏好进行进一步处理
-                    } else {
-                        System.out.println("SBS " + sbs + " 未在偏好列表中找到。");
-                        // 处理偏好列表中没有该SBS的情况
+                        // 对匹配的偏好进行进一步处理，sbs-1是因为sbs是从1开始的
+                        System.out.println(preferencesListList.get(sbs-1));
                     }
+//                    else {
+//                        System.out.println("SBS " + sbs + " 未在偏好列表中找到。");
+//                        // 处理偏好列表中没有该SBS的情况
+//                    }
                 } finally {
                     preferenceListLock.unlock(); // 释放偏好列表的锁
                 }
