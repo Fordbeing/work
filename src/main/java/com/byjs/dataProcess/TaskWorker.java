@@ -59,6 +59,10 @@ public class TaskWorker implements Runnable {
                         // 对匹配的偏好进行进一步处理
                         // 对匹配的偏好进行进一步处理，sbs-1是因为sbs是从1开始的
                         System.out.println(preferencesListList.get(sbs-1));
+                        // TODO: 添加处理偏好列表中匹配的SBS的其他逻辑
+                        if(preferencesListList.get(sbs-1).getMemorySize() > 0 || true){
+
+                        }
                     }
 //                    else {
 //                        System.out.println("SBS " + sbs + " 未在偏好列表中找到。");
