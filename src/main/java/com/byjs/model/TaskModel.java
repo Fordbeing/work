@@ -12,5 +12,7 @@ import lombok.Data;
 public class TaskModel {
     private Integer ID; // 任务模型ID
     private Integer TaskSize;// 任务大小
+    private Integer CPUResource;// CPU资源
+    private Integer MemoryResource;// 内存资源
 
 }

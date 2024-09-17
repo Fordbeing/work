@@ -34,7 +34,7 @@ public class MBSModel {
         this.CoverRange = 350; // 覆盖范围350米
         this.TransmitPower = 43; // 传输功率43dBm
         this.Bandwidth = 20; // 带宽20MHz
-        this.CPUResource = 0.5; // CPU资源0.5
+        this.CPUResource = 200; // CPU资源0.5
         this.MemoryResource = 0.5; // 内存资源0.5
         this.ChannelNumber = 5; // 通道数量5
         this.MemorySize = 1000; // 存储能力1000MB

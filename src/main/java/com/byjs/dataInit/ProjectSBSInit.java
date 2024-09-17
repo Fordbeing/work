@@ -39,7 +39,7 @@ public class ProjectSBSInit {
             sbsModel.setCoverRange(70);
             sbsModel.setTransmitPower(23);
             sbsModel.setBandwidth(10);
-            sbsModel.setCPUResource(0.5);
+            sbsModel.setCPUResource(100);
             sbsModel.setMemoryResource(0.5);
             sbsModel.setChannelNumber(5);
             sbsModel.setMemorySize(500);

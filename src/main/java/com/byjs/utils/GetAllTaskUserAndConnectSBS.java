@@ -19,24 +19,64 @@ public class GetAllTaskUserAndConnectSBS {
     public List<TaskUserAndConnectSBS> getAll() throws SQLException {
         List<TaskUserAndConnectSBS> taskUserAndConnectSBSS = new ArrayList<>();
         Connection mysqlConnection = MysqlConnection.CreateConnection();
-        String sql = "SELECT * FROM userdevice";
-        Statement statement = mysqlConnection.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
 
-        while (resultSet.next()) {
-            if (resultSet.getString("TaskID") != null) {
-                TaskUserAndConnectSBS taskUserAndConnectSBS = new TaskUserAndConnectSBS();
-                taskUserAndConnectSBS.setId(resultSet.getInt("ID"));
-                taskUserAndConnectSBS.setTaskId(resultSet.getString("TaskID"));
-                taskUserAndConnectSBS.setSBSList(getSbsList(resultSet));
+        // 创建两个Statement对象，分别用于不同的查询
+        Statement userDeviceStmt = mysqlConnection.createStatement();
+        Statement taskStmt = mysqlConnection.createStatement();
 
-                System.out.println(taskUserAndConnectSBS);
-                taskUserAndConnectSBSS.add(taskUserAndConnectSBS);
+        String userDeviceSql = "SELECT * FROM userdevice";
+        ResultSet userDeviceResultSet = userDeviceStmt.executeQuery(userDeviceSql);
+
+        try {
+            while (userDeviceResultSet.next()) {
+                String taskId = userDeviceResultSet.getString("TaskID");
+                if (taskId != null) {
+                    TaskUserAndConnectSBS taskUserAndConnectSBS = new TaskUserAndConnectSBS();
+                    taskUserAndConnectSBS.setId(userDeviceResultSet.getInt("ID"));
+                    taskUserAndConnectSBS.setTaskId(taskId);
+                    taskUserAndConnectSBS.setSBSList(getSbsList(userDeviceResultSet));
+
+                    // 查询对应task的CPU和RAM资源
+                    String taskSql = "SELECT CPUResource, RAMResource FROM tasks WHERE ID=" + taskId;
+                    ResultSet taskResultSet = taskStmt.executeQuery(taskSql);
+
+                    try {
+                        if (taskResultSet.next()) {
+                            taskUserAndConnectSBS.setCPUResource(taskResultSet.getInt("CPUResource"));
+                            taskUserAndConnectSBS.setRAMResource(taskResultSet.getInt("RAMResource"));
+                        }
+                    } finally {
+                        // 关闭task查询的ResultSet
+                        if (taskResultSet != null) {
+                            taskResultSet.close();
+                        }
+                    }
+
+                    System.out.println(taskUserAndConnectSBS);
+                    taskUserAndConnectSBSS.add(taskUserAndConnectSBS);
+                }
+            }
+        } finally {
+            // 关闭userdevice查询的ResultSet
+            if (userDeviceResultSet != null) {
+                userDeviceResultSet.close();
+            }
+            // 关闭Statement
+            if (userDeviceStmt != null) {
+                userDeviceStmt.close();
+            }
+            if (taskStmt != null) {
+                taskStmt.close();
+            }
+            // 关闭连接
+            if (mysqlConnection != null) {
+                mysqlConnection.close();
             }
         }
 
         return taskUserAndConnectSBSS;
     }
+
 
 
     // 这里就是把sbsList 转换为 List<Integer>

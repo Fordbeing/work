@@ -4,6 +4,7 @@ import com.byjs.model.TaskModel;
 import com.byjs.utils.MysqlConnection;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
@@ -22,9 +23,19 @@ public class ProjectTaskInit {
         for (int i = 1; i <= 100; i++) {
             TaskModel taskModel = new TaskModel();
             taskModel.setTaskSize(10); // 任务大小,先设定为10MB，后面再进行随机
-            String sql = "insert into tasks(TaskSize) values" + "(" + taskModel.getTaskSize() + ")";
-            assert connection != null;
-            connection.createStatement().execute(sql);
+            taskModel.setCPUResource(5);
+            taskModel.setMemoryResource(10);
+            String sql = "INSERT INTO tasks (TaskSize, CPUResource, RAMResource) VALUES (?, ?, ?)";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, taskModel.getTaskSize());
+                preparedStatement.setInt(2, taskModel.getCPUResource());
+                preparedStatement.setInt(3, taskModel.getMemoryResource());
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();  // 处理异常
+            }
+
         }
         long endTime = System.currentTimeMillis();
         System.out.println("任务初始化完成，耗时：" + (endTime - startTime) + "ms");

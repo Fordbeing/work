@@ -13,4 +13,6 @@ public class TaskUserAndConnectSBS {
     private Integer id;
     private String taskId;
     private List<Integer> SBSList;
+    private Integer CPUResource;
+    private Integer RAMResource;
 }

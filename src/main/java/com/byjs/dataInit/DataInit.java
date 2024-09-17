@@ -18,9 +18,9 @@ public class DataInit {
     public static List<PreferencesList> init() throws Exception {
         // 初始化SBS
 //        projectSBSInit.init();
-//        // 初始化任务模型
+////        // 初始化任务模型
 //        projectTaskInit.init();
-//        // 初始化用户设备
+////        // 初始化用户设备
 //        projectUserDeviceInit.init();
         // 全局BS设备初始化
         List<PreferencesList> preferencesLists = preferencesListInit.init();
